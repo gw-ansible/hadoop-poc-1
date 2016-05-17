@@ -266,10 +266,10 @@
       service: name=cloudera-scm-server enabled=yes state=running 
     
     - name: ganglia-gmetad
-      yum:  ganglia-gmetad state=present
+      yum:  name=ganglia-gmetad state=present
       
     - name: ganglia-web
-      yum:  ganglia-web state=present
+      yum:  name=ganglia-web state=present
     
 
 
