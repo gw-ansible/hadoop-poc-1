@@ -1,0 +1,263 @@
+---
+- hosts: all 
+  remote_user: ec2-user
+  become: yes                 # sudo to root
+
+  vars:
+    myrepo:  http://jump.hadoop.poc.local/repo 
+
+  tasks:
+
+    - name: user hadoopadm
+      user: name=hadoopadm 
+
+    - name: hadoopadm .ssh
+      file: path=/home/hadoopadm/.ssh state=directory mode=0755 owner=hadoopadm group=hadoopadm
+
+    - name: hadoopadm .bash_profile
+      get_url: url={{myrepo}}/hadoopadm_bash_profile dest=/home/hadoopadm/.bash_profile force=yes mode=644 owner=hadoopadm group=hadoopadm
+
+    - name: sudoers
+      get_url: url={{myrepo}}/sudoers dest=/etc/sudoers force=yes mode=440 owner=root group=root
+
+    - name: hadoopadm authorized_keys
+      get_url: url={{myrepo}}/hadoopadm_auth_keys dest=/home/hadoopadm/.ssh/authorized_keys force=yes mode=644
+      
+    - name: resolv.conf
+      get_url: url={{myrepo}}/resolv.conf dest=/etc/resolv.conf force=yes
+
+    - name: hostname
+      hostname: name={{ inventory_hostname }}
+
+    - name: yum clean all
+      command: yum clean all
+      changed_when: false
+
+    - name: epel 
+      yum: name={{myrepo}}/epel-release-7-6.noarch.rpm state=present
+
+    - name: bind-utils 
+      yum: name=bind-utils state=present
+
+    - name: wget
+      yum: name=wget state=present
+
+    - name: Java
+      yum: name={{myrepo}}/jdk-8u60-linux-x64.rpm state=present
+
+    - name: bzip2 
+      yum: name=bzip2 state=present
+
+    - name: bzip2 devel 
+      yum: name=bzip2-devel state=present
+    
+    - name: freetype devel 
+      yum: name=freetype-devel state=present
+    
+    - name: libgfortran 
+      yum: name=libgfortran state=present
+    
+    - name: ruby 
+      yum: name=libselinux-ruby state=present
+    
+    - name: openssl devel
+      yum: name=openssl-devel state=present
+    
+    - name: php
+      yum: name=php state=present
+
+    - name: python 
+      yum: name=python state=present
+
+    - name: python-pip
+      yum: name=python-pip state=present
+
+    - name: aws cli 
+      pip: name=awscli 
+
+    - name: ganglia 
+      yum: name=ganglia state=present
+    
+    - name: disable SE Linux
+      selinux: state=disabled 
+
+    - name: Disable Transparent Huge Pages
+      command: echo never > /sys/kernel/mm/transparent_hugepage/defrag
+      changed_when: false
+
+    - name: rc.local
+      get_url: url={{myrepo}}/rc.local dest=/etc/rc.local force=yes
+
+    - name: vm.swappiness = 0
+      sysctl: name=vm.swappiness value=0 state=present
+
+    - name:  vm.overcommit_memory = 1
+      sysctl: name=vm.overcommit_memory value=1 state=present
+
+    - name: Turn off swap
+      command: swapoff -a
+      changed_when: false
+
+    - name: Turn off firewall 
+      command: systemctl mask firewalld
+      changed_when: false
+
+    - name: system limits
+      get_url: url={{myrepo}}/20-nproc.conf dest=/etc/security/limits.d/20-nproc.conf force=yes
+
+    - name: cloudera repo in yum.repos.d 
+      get_url: url={{myrepo}}/cloudera-manager.repo dest=/etc/yum.repos.d/cloudera-manager.repo force=yes mode=644
+
+    - name: yum cloudera-manager-agent
+      yum: name=cloudera-manager-agent.x86_64 state=present
+
+    - name: started - cloudera-scm-agent
+      service: name=cloudera-scm-agent enabled=yes state=started 
+
+    - name: mysql-connector-java
+      yum: name=mysql-connector-java state=present
+
+
+- hosts: mysqldb 
+  remote_user: ec2-user
+  become: yes                 # sudo to root
+
+  vars:
+    myrepo:  http://jump.hadoop.poc.local/repo/ 
+
+  tasks:
+
+    - name: mysql repo config 
+      yum: name={{myrepo}}/mysql57-community-release-el7-8.noarch.rpm state=present
+
+    - name: mysql
+      yum: name=mysql-community-server state=present
+
+    - name: mysql-connector-java
+      yum: name=mysql-connector-java state=present
+
+
+- hosts: alldn 
+  remote_user: ec2-user
+  become: yes                 # sudo to root
+
+  tasks:
+  
+    - name: filesystem /dev/xvdb
+      filesystem: fstype=ext4 dev=/dev/xvdb
+
+    - name: filesystems /dev/xvdc
+      filesystem: fstype=ext4 dev=/dev/xvdc
+
+    - name: filesystems /dev/xvdd
+      filesystem: fstype=ext4 dev=/dev/xvdd
+
+    - name: mount point hadoop00
+      file: path=/hadoop00 state=directory mode=0775 owner=root group=root
+
+    - name: mount point hadoop01
+      file: path=/hadoop01 state=directory mode=0775 owner=root group=root
+    
+    - name: mount point hadoop02
+      file: path=/hadoop02 state=directory mode=0775 owner=root group=root
+
+    - name: mount filesystem hadoop00
+      mount: name=/hadoop00 src=/dev/xvdb fstype=ext4 state=mounted opts=nofail
+
+    - name: mount filesystem hadoop01
+      mount: name=/hadoop01 src=/dev/xvdc fstype=ext4 state=mounted opts=nofail
+
+    - name: mount filesystem hadoop02
+      mount: name=/hadoop02 src=/dev/xvdd fstype=ext4 state=mounted opts=nofail
+
+    - name: tunefs /dev/xvdb
+      command: tune2fs -m 1 /dev/xvdb
+      changed_when: false
+
+    - name: tunefs /dev/xvdc
+      command: tune2fs -m 1 /dev/xvdc
+      changed_when: false
+
+    - name: tunefs /dev/xvdd
+      command: tune2fs -m 1 /dev/xvdd
+      changed_when: false
+
+      
+- hosts: alledge  
+  remote_user: ec2-user
+  become: yes                 # sudo to root
+
+  vars:
+    myrepo:  http://jump.hadoop.poc.local/repo/ 
+
+  tasks:
+
+    - name: filesystems /dev/xvdb
+      filesystem: fstype=ext4 dev=/dev/xvdb
+
+    - name: mount point /scratch
+      file: path=/scratch state=directory mode=0775 owner=root group=root
+
+    - name: mount filesystem /scratch 
+      mount: name=/scratch src=/dev/xvdb fstype=auto state=mounted opts=nofail
+
+    - name: filesystems /dev/xvdc
+      filesystem: fstype=ext4 dev=/dev/xvdc
+
+    - name: mount point /apps
+      file: path=/edge state=directory mode=0775 owner=root group=root
+
+    - name: mount filesystem /apps
+      mount: name=/apps/ src=/dev/xvdc fstype=auto state=mounted opts=nofail
+
+    - name: group pocappid
+      user: name=pocappid 
+
+    - name: user pocappid
+      user: name=pocappid group=pocappid home=/apps/pocappid
+
+
+- hosts: allmaster  
+  remote_user: ec2-user
+  become: yes                 # sudo to root
+
+  vars:
+    myrepo:  http://jump.hadoop.poc.local/repo/ 
+
+  tasks:
+
+    - name: filesystems /dev/xvdb
+      filesystem: fstype=ext4 dev=/dev/xvdb
+
+    - name: mount point /scratch
+      file: path=/scratch state=directory mode=0775 owner=root group=root
+
+    - name: mount filesystem /scratch 
+      mount: name=/scratch src=/dev/xvdb fstype=auto state=mounted opts=nofail
+
+
+
+- hosts: cm
+  remote_user: ec2-user
+  become: yes                 # sudo to root
+
+  vars:
+    myrepo:  http://jump.hadoop.poc.local/repo/ 
+
+  tasks:
+
+
+    - name: cloudera-manager-daemons
+      yum: name=cloudera-manager-daemons.x86_64 state=present
+
+    - name: cloudera-manager-server
+      yum: name=cloudera-manager-server.x86_64 state=present
+
+    #- name: cloudera-manager-server-db-2
+    #  yum: name=cloudera-manager-server-db-2.x86_64 state=present
+
+    - name: cloudera-scm-server 
+      service: name=cloudera-scm-server enabled=yes state=running 
+
+
+...
