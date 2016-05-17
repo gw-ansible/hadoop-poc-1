@@ -80,6 +80,9 @@
 
     - name: ganglia 
       yum: name=ganglia state=present
+      
+    - name: ganglia-gmond 
+      yum: name=ganglia-gmond state=present
     
     - name: disable SE Linux
       selinux: state=disabled 
@@ -261,6 +264,13 @@
 
     - name: cloudera-scm-server 
       service: name=cloudera-scm-server enabled=yes state=running 
+    
+    - name: ganglia-gmetad
+      yum: ganglia-gmetad state=present
+      
+    - name: ganglia-web
+      yum: ganglia-web state=present
+    
 
 
 ...
