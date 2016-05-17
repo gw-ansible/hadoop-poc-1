@@ -65,6 +65,9 @@
     
     - name: php
       yum: name=php state=present
+      
+    - name: traceroute 
+      yum: name=traceroute state=present
 
     - name: python 
       yum: name=python state=present
