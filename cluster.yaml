@@ -268,8 +268,8 @@
     - name: ganglia-gmetad
       yum:  name=ganglia-gmetad state=present
       
-    - name: ganglia-web
-      yum:  name=ganglia-web state=present
+    #- name: ganglia-web
+      #yum:  name=ganglia-web state=present
     
 
 
