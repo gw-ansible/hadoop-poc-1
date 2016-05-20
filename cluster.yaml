@@ -122,6 +122,9 @@
 
     - name: mysql-connector-java
       yum: name=mysql-connector-java state=present
+      
+    - name: ganglia gmond
+      service: name=gmond enabled=yes state=started 
 
 
 - hosts: mysqldb 
@@ -274,6 +277,7 @@
     - name: ganglia-web
       yum:  name=ganglia-web state=present
     
-
+    - name: ganglia gmetad
+      service: name=gmetad enabled=yes state=started 
 
 ...
