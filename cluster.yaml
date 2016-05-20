@@ -262,7 +262,7 @@
       yum: name=httpd state=present
       
     - name: httpd service
-      service: name=httpd enabled=yes state=present
+      service: name=httpd enabled=yes state=running
 
     - name: cloudera-manager-daemons
       yum: name=cloudera-manager-daemons.x86_64 state=present
