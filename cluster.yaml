@@ -10,6 +10,9 @@
 
     - name: user hadoopadm
       user: name=hadoopadm 
+      
+    - name: user gwhit
+      user: name=gwhit 
 
     - name: hadoopadm .ssh
       file: path=/home/hadoopadm/.ssh state=directory mode=0755 owner=hadoopadm group=hadoopadm
