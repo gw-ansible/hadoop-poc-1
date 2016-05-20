@@ -261,6 +261,9 @@
     - name: Apache http server
       yum: name=httpd state=present
       
+    - name: symlink www dir to ganglia
+      file: src=/var/www/html/ganglia dest=/usr/share/ganglia owner=root group=root state=link
+      
     - name: httpd service
       service: name=httpd enabled=yes state=running
 
