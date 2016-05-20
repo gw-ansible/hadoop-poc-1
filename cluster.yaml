@@ -123,6 +123,9 @@
     - name: mysql-connector-java
       yum: name=mysql-connector-java state=present
       
+    - name: Ganglia agent config
+      get_url: url={{myrepo}}/gmond.conf dest=/etc/ganglia/gmond.conf force=yes
+      
     - name: ganglia gmond
       service: name=gmond enabled=yes state=started 
 
@@ -276,6 +279,9 @@
       
     - name: ganglia-web
       yum:  name=ganglia-web state=present
+      
+    - name: Ganglia agent config
+      get_url: url={{myrepo}}/gmetad.conf dest=/etc/ganglia/gmetad.conf force=yes
     
     - name: ganglia gmetad
       service: name=gmetad enabled=yes state=started 
