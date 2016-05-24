@@ -244,11 +244,11 @@
     - name: filesystems /dev/xvdb
       filesystem: fstype=ext4 dev=/dev/xvdb
 
-    - name: mount point /scratch
-      file: path=/scratch state=directory mode=0775 owner=root group=root
+    - name: mount point /hadoop00
+      file: path=/hadoop00 state=directory mode=0775 owner=root group=root
 
-    - name: mount filesystem /scratch 
-      mount: name=/scratch src=/dev/xvdb fstype=auto state=mounted opts=nofail
+    - name: mount filesystem /hadoop00 
+      mount: name=/hadoop00 src=/dev/xvdb fstype=auto state=mounted opts=nofail
 
     - name: filesystems /dev/xvdc
       filesystem: fstype=ext4 dev=/dev/xvdc
