@@ -283,9 +283,6 @@
     - name: Apache http server
       yum: name=httpd state=present
       
-    - name: symlink www dir to ganglia
-      file: src=/usr/share/ganglia dest=/var/www/html/ganglia owner=root group=root state=link
-      
     - name: httpd service
       service: name=httpd enabled=yes state=running
 
@@ -312,6 +309,9 @@
       
     - name: Ganglia agent config
       get_url: url={{myrepo}}/gmetad.conf dest=/etc/ganglia/gmetad.conf force=yes
+      
+    - name: symlink www dir to ganglia
+      file: src=/usr/share/ganglia dest=/var/www/html/ganglia owner=root group=root state=link
     
     - name: ganglia gmetad
       service: name=gmetad enabled=yes state=started 
