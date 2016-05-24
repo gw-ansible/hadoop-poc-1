@@ -286,10 +286,10 @@
       service: name=httpd enabled=yes state=running
 
     - name: cloudera-manager-daemons
-      yum: name=cloudera-manager-daemons.x86_64* state=latest
+      yum: name=cloudera-manager-daemons.x86_64-* state=latest
 
     - name: cloudera-manager-server
-      yum: name=cloudera-manager-server* state=latest
+      yum: name=cloudera-manager-server.x86_64-* state=latest
 
     #- name: cloudera-manager-server-db-2
     #  yum: name=cloudera-manager-server-db-2.x86_64 state=present
