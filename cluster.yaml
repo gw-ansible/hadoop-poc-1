@@ -128,10 +128,10 @@
       get_url: url={{myrepo}}/cloudera-manager.repo dest=/etc/yum.repos.d/cloudera-manager.repo force=yes mode=644
 
     - name: yum cloudera-manager-agent
-      yum: name=cloudera-manager-agent.x86_64 state=present
+      yum: name=cloudera-manager-agent.x86_64 state=latest
 
     - name: started - cloudera-scm-agent
-      service: name=cloudera-scm-agent enabled=yes state=started 
+      service: name=cloudera-scm-agent enabled=yes state=latest 
 
     - name: mysql-connector-java
       yum: name=mysql-connector-java state=present
@@ -289,7 +289,7 @@
       yum: name=cloudera-manager-daemons.x86_64 state=present
 
     - name: cloudera-manager-server
-      yum: name=cloudera-manager-server.x86_64 state=present
+      yum: name=cloudera-manager-server.x86_64 state=latest
 
     #- name: cloudera-manager-server-db-2
     #  yum: name=cloudera-manager-server-db-2.x86_64 state=present
