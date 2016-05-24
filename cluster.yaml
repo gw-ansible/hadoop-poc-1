@@ -141,6 +141,24 @@
     - name: ganglia gmond
       service: name=gmond enabled=yes state=started 
 
+- hosts: allmaster  
+  name: Master Nodes
+  remote_user: ec2-user
+  become: yes                 # sudo to root
+
+  vars:
+    myrepo:  http://jump.hadoop.poc.local/repo/ 
+
+  tasks:
+
+    - name: filesystems /dev/xvdb
+      filesystem: fstype=ext4 dev=/dev/xvdb
+
+    - name: mount point /scratch
+      file: path=/scratch state=directory mode=0775 owner=root group=root
+
+    - name: mount filesystem /scratch 
+      mount: name=/scratch src=/dev/xvdb fstype=auto state=mounted opts=nofail
 
 - hosts: mysqldb 
   remote_user: ec2-user
@@ -242,26 +260,6 @@
 
     - name: user pocappid
       user: name=pocappid group=pocappid home=/apps/pocappid
-
-
-- hosts: allmaster  
-  remote_user: ec2-user
-  become: yes                 # sudo to root
-
-  vars:
-    myrepo:  http://jump.hadoop.poc.local/repo/ 
-
-  tasks:
-
-    - name: filesystems /dev/xvdb
-      filesystem: fstype=ext4 dev=/dev/xvdb
-
-    - name: mount point /scratch
-      file: path=/scratch state=directory mode=0775 owner=root group=root
-
-    - name: mount filesystem /scratch 
-      mount: name=/scratch src=/dev/xvdb fstype=auto state=mounted opts=nofail
-
 
 
 - hosts: cm
