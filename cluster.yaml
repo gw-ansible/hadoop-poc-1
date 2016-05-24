@@ -195,44 +195,34 @@
 
   tasks:
   
-    - name: filesystem /dev/xvdb
-      filesystem: fstype=ext4 dev=/dev/xvdb
+    - name: local filesystems
+      filesystem: fstype=ext4 dev={{ item }}
+      with_items:
+        - /dev/xvdb
+        - /dev/xvdc
+        - /dev/xvdd
 
-    - name: filesystems /dev/xvdc
-      filesystem: fstype=ext4 dev=/dev/xvdc
+    - name: mount points hadoopXX
+      file: path={{ item }} state=directory mode=0775 owner=root group=root
+      with_items:
+        - /hadoop00
+        - /hadoop01
+        - /hadoop02
 
-    - name: filesystems /dev/xvdd
-      filesystem: fstype=ext4 dev=/dev/xvdd
+    - name: mount local filesystems
+      mount: name={{ item.mp }} src={{ item.dev }} fstype=ext4 state=mounted opts=nofail
+      with_items:
+        - { mp: '/hadoop00', dev: '/dev/xvdb' }
+        - { mp: '/hadoop01', dev: '/dev/xvdc' }
+        - { mp: '/hadoop02', dev: '/dev/xvdd' }
 
-    - name: mount point hadoop00
-      file: path=/hadoop00 state=directory mode=0775 owner=root group=root
-
-    - name: mount point hadoop01
-      file: path=/hadoop01 state=directory mode=0775 owner=root group=root
-    
-    - name: mount point hadoop02
-      file: path=/hadoop02 state=directory mode=0775 owner=root group=root
-
-    - name: mount filesystem hadoop00
-      mount: name=/hadoop00 src=/dev/xvdb fstype=ext4 state=mounted opts=nofail
-
-    - name: mount filesystem hadoop01
-      mount: name=/hadoop01 src=/dev/xvdc fstype=ext4 state=mounted opts=nofail
-
-    - name: mount filesystem hadoop02
-      mount: name=/hadoop02 src=/dev/xvdd fstype=ext4 state=mounted opts=nofail
-
-    - name: tunefs /dev/xvdb
-      command: tune2fs -m 1 /dev/xvdb
+    - name: tunefs 
+      command: tune2fs -m 1 {{ item }}
       changed_when: false
-
-    - name: tunefs /dev/xvdc
-      command: tune2fs -m 1 /dev/xvdc
-      changed_when: false
-
-    - name: tunefs /dev/xvdd
-      command: tune2fs -m 1 /dev/xvdd
-      changed_when: false
+      with_items:
+        - '/dev/xvdb'
+        - '/dev/xvdc'
+        - '/dev/xvdd'
 
       
 - hosts: alledge  
