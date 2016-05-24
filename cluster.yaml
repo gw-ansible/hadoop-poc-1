@@ -150,6 +150,9 @@
 
     - name: mysql-connector-java
       yum: name=mysql-connector-java state=present
+      
+    - name: mysql enabled
+      yum: name=mysqld enabled=yes state=started
 
 
 - hosts: alldn 
