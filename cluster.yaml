@@ -1,5 +1,6 @@
 ---
 - hosts: all 
+  name: All Nodes
   remote_user: ec2-user
   become: yes                 # sudo to root
 
@@ -160,7 +161,8 @@
     - name: mount filesystem /scratch 
       mount: name=/scratch src=/dev/xvdb fstype=auto state=mounted opts=nofail
 
-- hosts: mysqldb 
+- hosts: mysqldb
+  name: mySQL Database Node
   remote_user: ec2-user
   become: yes                 # sudo to root
 
@@ -183,6 +185,7 @@
 
 
 - hosts: alldn 
+  name: Data Nodes
   remote_user: ec2-user
   become: yes                 # sudo to root
 
@@ -229,6 +232,7 @@
 
       
 - hosts: alledge  
+  name: Edge Nodes
   remote_user: ec2-user
   become: yes                 # sudo to root
 
@@ -263,6 +267,7 @@
 
 
 - hosts: cm
+  name: Cloudera Manager Node
   remote_user: ec2-user
   become: yes                 # sudo to root
 
