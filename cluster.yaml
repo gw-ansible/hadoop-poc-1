@@ -20,6 +20,15 @@
     - name: hadoopadm .bash_profile
       get_url: url={{myrepo}}/hadoopadm_bash_profile dest=/home/hadoopadm/.bash_profile force=yes mode=644 owner=hadoopadm group=hadoopadm
 
+    - name: aws config dir
+      file: path=/root/.aws state=directory mode=0775 owner=root group=root
+
+    - name: aws config
+      get_url: url={{myrepo}}/config dest=/root/.aws/config force=yes mode=600 owner=root group=root
+      
+    - name: aws credentials
+      get_url: url={{myrepo}}/credentials dest=/root/.aws/credentials force=yes mode=600 owner=root group=root
+
     - name: sudoers
       get_url: url={{myrepo}}/sudoers dest=/etc/sudoers force=yes mode=440 owner=root group=root
 
