@@ -263,7 +263,7 @@
       user: name=pocappid 
 
     - name: user pocappid
-      user: name=pocappid group=pocappid home=/apps/pocappid
+      user: name=pocappid group=pocappid home=/home/pocappid
 
 
 - hosts: cm
