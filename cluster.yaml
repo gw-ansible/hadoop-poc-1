@@ -131,7 +131,7 @@
       yum: name=cloudera-manager-agent.x86_64* state=latest
 
     - name: started - cloudera-scm-agent
-      service: name=cloudera-scm-agent enabled=yes state=running
+      service: name=cloudera-scm-agent enabled=yes state=started
 
     - name: mysql-connector-java
       yum: name=mysql-connector-java state=present
@@ -295,7 +295,7 @@
     #  yum: name=cloudera-manager-server-db-2.x86_64 state=present
 
     - name: cloudera-scm-server 
-      service: name=cloudera-scm-server enabled=yes state=running 
+      service: name=cloudera-scm-server enabled=yes state=started
     
     - name: ganglia-gmetad
       yum:  name=ganglia-gmetad state=present
