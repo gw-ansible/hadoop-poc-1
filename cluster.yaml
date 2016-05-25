@@ -187,8 +187,8 @@
     - name: mysql-connector-java
       yum: name=mysql-connector-java state=present
       
-    - name: mysql enabled
-      service: name=mysqld enabled=yes state=started
+    #- name: mysql enabled
+    #  service: name=mysqld enabled=yes state=started
 
 
 - hosts: alldn 
@@ -282,8 +282,8 @@
     #- name: cloudera-manager-server-db-2
     #  yum: name=cloudera-manager-server-db-2.x86_64 state=present
 
-    - name: cloudera-scm-server 
-      service: name=cloudera-scm-server enabled=yes state=started
+    #- name: cloudera-scm-server 
+    #  service: name=cloudera-scm-server enabled=yes state=started
     
     - name: ganglia-gmetad
       yum:  name=ganglia-gmetad state=present
