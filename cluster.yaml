@@ -244,14 +244,8 @@
     - name: mount filesystem /hadoop00 
       mount: name=/hadoop00 src=/dev/xvdb fstype=auto state=mounted opts=nofail
 
-    - name: filesystems /dev/xvdc
-      filesystem: fstype=ext4 dev=/dev/xvdc
-
-    - name: mount point /apps
-      file: path=/edge state=directory mode=0775 owner=root group=root
-
-    - name: mount filesystem /apps
-      mount: name=/apps/ src=/dev/xvdc fstype=auto state=mounted opts=nofail
+    - name: filesystems /dev/xvdb
+      filesystem: fstype=ext4 dev=/dev/xvdb
 
     - name: group pocappid
       user: name=pocappid 
