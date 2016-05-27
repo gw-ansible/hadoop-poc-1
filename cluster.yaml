@@ -129,6 +129,9 @@
 
     - name: cloudera repo in yum.repos.d 
       get_url: url={{myrepo}}/cloudera-manager.repo dest=/etc/yum.repos.d/cloudera-manager.repo force=yes mode=644
+      
+    - name: resolv.conf
+      get_url: url={{myrepo}}/resolv.conf dest=/etc/resolv.conf force=yes
 
     - name: yum cloudera-manager-agent
       yum: name=cloudera-manager-agent.x86_64 state=present
@@ -147,6 +150,7 @@
     
     - name: yum - update all cloudera 
       yum: name=* enablerepo=cloudera-manager state=latest
+      
   
 
 - hosts: allmaster  
