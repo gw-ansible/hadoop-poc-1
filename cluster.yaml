@@ -133,8 +133,8 @@
     - name: yum cloudera-manager-agent
       yum: name=cloudera-manager-agent.x86_64 state=present
 
-    - name: started - cloudera-scm-agent
-      service: name=cloudera-scm-agent enabled=yes state=started
+    #- name: started - cloudera-scm-agent
+    #  service: name=cloudera-scm-agent enabled=yes state=started
 
     - name: mysql-connector-java
       yum: name=mysql-connector-java state=present
