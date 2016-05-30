@@ -267,7 +267,7 @@
       get_url: url={{myrepo}}/pocappid_bash_profile dest=/home/pocappid/.bash_profile force=yes mode=644 owner=pocappid group=pocappid
     
     - name: rbutils 
-      unarchive: src={{myrepo}}/rbutils-src-0.13.tar.gz dest=/usr/share/java/ copy=no #copy=no is required to fetch from https, otherwise defaults to playbook dir
+      unarchive: src={{myrepo}}/rbutils-bin-0.13.tar.gz dest=/usr/share/java/ copy=no #copy=no is required to fetch from https, otherwise defaults to playbook dir
   
       
   
