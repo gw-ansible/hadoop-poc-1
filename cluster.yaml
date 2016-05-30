@@ -262,8 +262,15 @@
 
     - name: user pocappid
       user: name=pocappid group=pocappid home=/home/pocappid
-
-
+      
+    - name: hadoopadm .bash_profile
+      get_url: url={{myrepo}}/pocappid_bash_profile dest=/home/pocappid/.bash_profile force=yes mode=644 owner=pocappid group=pocappid
+    
+    - name: rbutils 
+      unarchive: src={{myrepo}}/rbutils-src-0.13.tar.gz dest=/usr/share/java/ 
+  
+      
+  
 - hosts: cm
   name: Cloudera Manager Node
   remote_user: ec2-user
