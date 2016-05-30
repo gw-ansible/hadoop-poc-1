@@ -241,6 +241,9 @@
     myrepo:  http://jump.hadoop.poc.local/repo/ 
 
   tasks:
+  
+    - name: ksh
+      yum: name=ksh state=present
 
     - name: filesystems /dev/xvdb
       filesystem: fstype=ext4 dev=/dev/xvdb
