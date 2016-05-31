@@ -146,7 +146,7 @@
       get_url: url={{myrepo}}/gmond.conf dest=/etc/ganglia/gmond.conf force=yes
       
     - name: ganglia gmond
-      service: name=gmond enabled=yes state=started 
+      service: name=gmond enabled=no 
     
     - name: yum - update all cloudera 
       yum: name=* enablerepo=cloudera-manager state=latest
