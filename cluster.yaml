@@ -148,8 +148,8 @@
     - name: ganglia gmond
       service: name=gmond enabled=no 
     
-    - name: yum - update all cloudera 
-      yum: name=* enablerepo=cloudera-manager state=latest
+    #- name: yum - update all cloudera 
+    #  yum: name=* enablerepo=cloudera-manager state=latest
       
   
 
